@@ -1,0 +1,37 @@
+{
+  "name": "wpp-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp Voice Transformer Bot - Transform messages into stylized voice messages",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "tts",
+    "voice",
+    "baileys"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.16",
+    "dotenv": "^16.4.7",
+    "pino": "^9.6.0",
+    "qrcode-terminal": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@types/qrcode-terminal": "^0.12.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
