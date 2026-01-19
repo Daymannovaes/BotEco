@@ -79,8 +79,9 @@ export async function startWhatsAppClient(): Promise<WASocket> {
     for (const message of messages) {
       console.log(`[DEBUG] Message from: ${message.key.remoteJid}, fromMe: ${message.key.fromMe}`);
 
-      // Skip messages from self
-      if (message.key.fromMe) continue;
+      // Process messages from self (the user triggers the bot by replying)
+      // Skip only if it's not from this device/session
+      if (!message.key.fromMe) continue;
 
       try {
         await handleMessage(sock!, message);
