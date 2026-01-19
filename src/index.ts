@@ -17,6 +17,7 @@ async function main(): Promise<void> {
     console.error('❌ Invalid ElevenLabs API key. Please check your .env file.');
     process.exit(1);
   }
+  console.log('   ✓ API key valid');
 
   // Show subscription info
   try {
