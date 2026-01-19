@@ -16,6 +16,10 @@ let sock: WASocket | null = null;
 
 const logger = pino({ level: 'silent' });
 
+// Message deduplication - Baileys can deliver the same message multiple times
+const processedMessages = new Set<string>();
+const MESSAGE_CACHE_TTL = 60000; // 60 seconds
+
 export async function startWhatsAppClient(): Promise<WASocket> {
   const { state, saveCreds } = await useMultiFileAuthState(config.paths.authInfo);
   const { version, isLatest } = await fetchLatestBaileysVersion();

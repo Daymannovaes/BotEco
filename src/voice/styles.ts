@@ -14,9 +14,9 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     description: 'Menacing, slow, dramatic pauses',
     prompt: 'Speak like a menacing movie villain with dramatic pauses, slow and deliberate delivery, emphasizing key words ominously.',
     aliases: ['villain', 'evil', 'menacing', 'bad guy', 'antagonist'],
-    stability: 0.3,
-    similarity_boost: 0.8,
-    style: 0.7,
+    stability: 0.25,
+    similarity_boost: 0.7,
+    style: 0.85,
   },
 
   trailer: {
@@ -44,9 +44,9 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     description: 'Soft, intimate whisper',
     prompt: 'Whisper softly and intimately, like an ASMR video. Very gentle and soothing.',
     aliases: ['whisper', 'asmr', 'soft', 'quiet', 'gentle', 'mysterious'],
-    stability: 0.6,
+    stability: 0.8,
     similarity_boost: 0.9,
-    style: 0.3,
+    style: 0.2,
   },
 
   excited: {
@@ -54,9 +54,9 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     description: 'High energy, enthusiastic',
     prompt: 'Speak with extreme enthusiasm and excitement, like you just received amazing news!',
     aliases: ['excited', 'enthusiastic', 'happy', 'joyful', 'hyped', 'pumped'],
-    stability: 0.25,
-    similarity_boost: 0.65,
-    style: 0.9,
+    stability: 0.2,
+    similarity_boost: 0.5,
+    style: 1.0,
   },
 
   robot: {
@@ -64,9 +64,9 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     description: 'Monotone, mechanical',
     prompt: 'Speak in a flat, monotone robotic voice. Very mechanical and precise.',
     aliases: ['robot', 'robotic', 'mechanical', 'ai', 'computer', 'monotone'],
-    stability: 0.9,
-    similarity_boost: 0.5,
-    style: 0.1,
+    stability: 0.95,
+    similarity_boost: 0.3,
+    style: 0.0,
   },
 
   drill_sergeant: {
@@ -74,9 +74,9 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     description: 'Loud, commanding',
     prompt: 'Bark commands like a military drill sergeant. Loud, authoritative, and demanding.',
     aliases: ['drill sergeant', 'sergeant', 'military', 'commander', 'army', 'commanding'],
-    stability: 0.3,
-    similarity_boost: 0.7,
-    style: 0.85,
+    stability: 0.15,
+    similarity_boost: 0.5,
+    style: 1.0,
   },
 
   nature_documentary: {
@@ -134,9 +134,9 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     description: 'Disinterested, lazy delivery',
     prompt: 'Speak with complete boredom and disinterest. Lazy, drawn-out, like you could not care less.',
     aliases: ['bored', 'boring', 'tired', 'lazy', 'uninterested', 'sleepy'],
-    stability: 0.75,
+    stability: 0.9,
     similarity_boost: 0.8,
-    style: 0.2,
+    style: 0.1,
   },
 
   news: {

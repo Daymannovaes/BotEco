@@ -58,69 +58,32 @@ export async function generateVoice(text: string, style: VoiceStyle): Promise<Bu
 }
 
 function prepareTextForStyle(text: string, style: VoiceStyle): string {
-  // Add style-specific modifications to the text
-  // ElevenLabs responds well to parenthetical stage directions
+  // Style is conveyed through voice_settings parameters, not text modifications.
+  // ElevenLabs eleven_multilingual_v2 speaks parenthetical stage directions literally,
+  // so we only apply text transformations that make sense (capitalization, punctuation).
 
   switch (style.name) {
-    case 'Movie Villain':
-      // Add dramatic pauses
-      return `(speaking menacingly with dramatic pauses) ${text}`;
-
-    case 'Movie Trailer':
-      // Epic announcer style
-      return `(in an epic movie trailer announcer voice) ${text}`;
-
     case 'Pirate':
       // Add pirate flair
-      return `(in a gruff pirate accent) Arrr! ${text}`;
-
-    case 'Whisper/ASMR':
-      // Whisper
-      return `(whispering softly) ${text}`;
-
-    case 'Excited':
-      // Add exclamation energy
-      return `(extremely excited and enthusiastic) ${text}!`;
-
-    case 'Robot':
-      // Mechanical delivery
-      return `(in a flat, robotic, monotone voice) ${text}`;
+      return `Arrr! ${text}`;
 
     case 'Drill Sergeant':
-      // Commanding
-      return `(shouting like a drill sergeant) ${text.toUpperCase()}!`;
+      // Commanding - uppercase for emphasis
+      return text.toUpperCase() + '!';
 
-    case 'Nature Documentary':
-      // Calm observation
-      return `(calmly, like a nature documentary narrator) ${text}`;
-
+    case 'Excited':
     case 'Sports Announcer':
-      // Excited commentary
-      return `(excitedly, like a sports commentator) ${text}!`;
+    case 'Angry':
+      // Add exclamation
+      return text + '!';
 
     case 'Sweet Grandma':
-      // Warm and caring
-      return `(warmly, like a loving grandmother) Oh dear, ${text}`;
-
-    case 'Sarcastic':
-      // Deadpan irony
-      return `(sarcastically, with heavy irony) ${text}`;
-
-    case 'Angry':
-      // Furious
-      return `(angrily, with frustration) ${text}!`;
+      // Warm prefix
+      return `Oh dear, ${text}`;
 
     case 'Bored':
-      // Disinterested
-      return `(boredly, with complete disinterest) ${text}...`;
-
-    case 'News Anchor':
-      // Professional
-      return `(professionally, like a news anchor) ${text}`;
-
-    case 'Shakespearean':
-      // Theatrical
-      return `(dramatically, with theatrical flair) ${text}`;
+      // Trailing off
+      return text + '...';
 
     default:
       return text;
