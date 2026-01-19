@@ -7,8 +7,8 @@ export interface ParsedInstruction {
   transformation?: 'summarize' | 'translate' | 'rewrite';
 }
 
-// Patterns to detect style instructions
-const STYLE_PATTERNS = [
+// Patterns to detect style instructions (English)
+const STYLE_PATTERNS_EN = [
   // "say it like a villain"
   /^(?:say|speak|read)\s+(?:it|this|that)\s+(?:like|as)\s+(?:a\s+|an\s+)?(.+)$/i,
 
@@ -45,6 +45,35 @@ const STYLE_PATTERNS = [
   // "do it villain style"
   /^(?:do\s+(?:it|this)\s+)?(.+)\s+style$/i,
 ];
+
+// Patterns to detect style instructions (Portuguese)
+const STYLE_PATTERNS_PT = [
+  // "responda como um pirata" / "responda como se fosse um pirata"
+  /^(?:responda|fale|leia|diga)\s+(?:isso\s+)?(?:como\s+)?(?:se\s+fosse\s+)?(?:um\s+|uma\s+)?(.+)$/i,
+
+  // "fale como pirata"
+  /^(?:fale|leia|diga)\s+como\s+(?:um\s+|uma\s+)?(.+)$/i,
+
+  // "voz de pirata" / "voz: pirata"
+  /^voz[:\s]+(?:de\s+)?(.+)$/i,
+
+  // "como um pirata"
+  /^como\s+(?:um\s+|uma\s+)?(.+)$/i,
+
+  // "no estilo pirata"
+  /^(?:no\s+)?estilo\s+(?:de\s+)?(.+)$/i,
+
+  // "seja um pirata"
+  /^seja\s+(?:um\s+|uma\s+)?(.+)$/i,
+
+  // "imite um pirata"
+  /^imite\s+(?:um\s+|uma\s+)?(.+)$/i,
+
+  // "sussurre isso" / "grite isso"
+  /^(sussurr[ea]|grit[ea]|berr[ea])\s*(?:isso)?$/i,
+];
+
+const STYLE_PATTERNS = [...STYLE_PATTERNS_EN, ...STYLE_PATTERNS_PT];
 
 // Patterns that indicate text transformation
 const TRANSFORM_PATTERNS = [
@@ -143,8 +172,9 @@ function findBestStyleMatch(input: string): VoiceStyle | null {
     }
   }
 
-  // Check for partial matches in common descriptors
+  // Check for partial matches in common descriptors (English + Portuguese)
   const descriptorMap: Record<string, string> = {
+    // English
     'movie': 'trailer',
     'epic': 'trailer',
     'evil': 'villain',
@@ -173,6 +203,65 @@ function findBestStyleMatch(input: string): VoiceStyle | null {
     'reporter': 'news',
     'theater': 'shakespearean',
     'classical': 'shakespearean',
+
+    // Portuguese
+    'pirata': 'pirate',
+    'vilão': 'villain',
+    'vilao': 'villain',
+    'malvado': 'villain',
+    'trailer': 'trailer',
+    'épico': 'trailer',
+    'epico': 'trailer',
+    'dramático': 'trailer',
+    'dramatico': 'trailer',
+    'sussurro': 'whisper',
+    'sussurrar': 'whisper',
+    'sussurre': 'whisper',
+    'asmr': 'whisper',
+    'animado': 'excited',
+    'empolgado': 'excited',
+    'feliz': 'excited',
+    'robô': 'robot',
+    'robo': 'robot',
+    'máquina': 'robot',
+    'maquina': 'robot',
+    'sargento': 'drill_sergeant',
+    'militar': 'drill_sergeant',
+    'gritando': 'drill_sergeant',
+    'natureza': 'nature_documentary',
+    'documentário': 'nature_documentary',
+    'documentario': 'nature_documentary',
+    'narrador': 'nature_documentary',
+    'esporte': 'sports',
+    'esportivo': 'sports',
+    'locutor': 'sports',
+    'vovó': 'grandma',
+    'vovo': 'grandma',
+    'avó': 'grandma',
+    'avo': 'grandma',
+    'velhinha': 'grandma',
+    'sarcástico': 'sarcastic',
+    'sarcastico': 'sarcastic',
+    'irônico': 'sarcastic',
+    'ironico': 'sarcastic',
+    'raiva': 'angry',
+    'bravo': 'angry',
+    'irritado': 'angry',
+    'furioso': 'angry',
+    'entediado': 'bored',
+    'cansado': 'bored',
+    'preguiçoso': 'bored',
+    'preguicoso': 'bored',
+    'sonolento': 'bored',
+    'jornal': 'news',
+    'jornalista': 'news',
+    'notícia': 'news',
+    'noticia': 'news',
+    'âncora': 'news',
+    'ancora': 'news',
+    'teatro': 'shakespearean',
+    'teatral': 'shakespearean',
+    'shakespeare': 'shakespearean',
   };
 
   for (const [keyword, styleKey] of Object.entries(descriptorMap)) {
