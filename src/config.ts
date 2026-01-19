@@ -12,7 +12,7 @@ export const config = {
   elevenlabs: {
     apiKey: process.env.ELEVENLABS_API_KEY || '',
     voiceId: process.env.ELEVENLABS_VOICE_ID || '21m00Tcm4TlvDq8ikWAM', // Rachel voice
-    modelId: 'eleven_monolingual_v1',
+    modelId: 'eleven_multilingual_v2', // Updated model (supports multiple languages)
   },
 
   // Bot settings
