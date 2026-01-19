@@ -20,6 +20,8 @@ export async function handleMessage(
   const text = extractMessageText(messageContent);
   if (!text) return;
 
+  console.log(`[DEBUG] Received message: "${text.slice(0, 50)}..."`);
+
   // Check for help command
   if (text.toLowerCase() === 'voice help' || text.toLowerCase() === '/voice help') {
     await sendTextMessage(chatId, getStylesHelp(), message);
@@ -28,21 +30,28 @@ export async function handleMessage(
 
   // Check if this is a reply to another message
   const quotedMessage = extractQuotedMessage(messageContent);
-  if (!quotedMessage) return;
+  if (!quotedMessage) {
+    console.log('[DEBUG] Not a reply, ignoring');
+    return;
+  }
 
   // Get the text from the quoted message
   const quotedText = extractMessageText(quotedMessage);
   if (!quotedText) {
-    // Quoted message has no text (could be media)
+    console.log('[DEBUG] Quoted message has no text');
     return;
   }
+
+  console.log(`[DEBUG] Quoted text: "${quotedText.slice(0, 50)}..."`);
 
   // Parse the style instruction from the user's message
   const parsedStyle = parseStyleInstruction(text);
   if (!parsedStyle) {
-    // Not a style instruction, ignore
+    console.log('[DEBUG] Not a style instruction, ignoring');
     return;
   }
+
+  console.log(`[DEBUG] Parsed style: ${parsedStyle.style.name}`);
 
   console.log(`🎤 Processing voice request: "${quotedText.slice(0, 50)}..." as ${parsedStyle.style.name}`);
 

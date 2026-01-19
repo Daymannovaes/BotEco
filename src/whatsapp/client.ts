@@ -3,7 +3,8 @@ import makeWASocket, {
   useMultiFileAuthState,
   WASocket,
   proto,
-  downloadMediaMessage,
+  fetchLatestBaileysVersion,
+  makeCacheableSignalKeyStore,
 } from '@whiskeysockets/baileys';
 import { Boom } from '@hapi/boom';
 import pino from 'pino';
@@ -13,16 +14,23 @@ import { handleMessage } from './handlers.js';
 
 let sock: WASocket | null = null;
 
-const logger = pino({ level: config.logLevel });
+const logger = pino({ level: 'silent' });
 
 export async function startWhatsAppClient(): Promise<WASocket> {
   const { state, saveCreds } = await useMultiFileAuthState(config.paths.authInfo);
+  const { version, isLatest } = await fetchLatestBaileysVersion();
+
+  console.log(`   Using WA v${version.join('.')}, isLatest: ${isLatest}`);
 
   sock = makeWASocket({
-    auth: state,
+    version,
+    auth: {
+      creds: state.creds,
+      keys: makeCacheableSignalKeyStore(state.keys, logger),
+    },
     printQRInTerminal: false,
-    logger: pino({ level: 'silent' }),
-    browser: ['VoiceReply Bot', 'Chrome', '120.0.0'],
+    logger,
+    generateHighQualityLinkPreview: true,
   });
 
   sock.ev.on('creds.update', saveCreds);
@@ -64,9 +72,13 @@ export async function startWhatsAppClient(): Promise<WASocket> {
   });
 
   sock.ev.on('messages.upsert', async ({ messages, type }) => {
+    console.log(`[DEBUG] messages.upsert event: type=${type}, count=${messages.length}`);
+
     if (type !== 'notify') return;
 
     for (const message of messages) {
+      console.log(`[DEBUG] Message from: ${message.key.remoteJid}, fromMe: ${message.key.fromMe}`);
+
       // Skip messages from self
       if (message.key.fromMe) continue;
 

@@ -129,8 +129,7 @@ function prepareTextForStyle(text: string, style: VoiceStyle): string {
 
 export async function checkApiKeyValid(): Promise<boolean> {
   try {
-    // Use voices endpoint as it requires fewer permissions than /user
-    const response = await fetch(`${ELEVENLABS_API_URL}/voices`, {
+    const response = await fetch(`${ELEVENLABS_API_URL}/user`, {
       headers: {
         'xi-api-key': config.elevenlabs.apiKey,
       },
