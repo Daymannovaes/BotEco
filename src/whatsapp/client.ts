@@ -56,7 +56,10 @@ export async function startWhatsAppClient(): Promise<WASocket> {
       console.log(`Connection closed. Reason: ${reason}. Reconnecting: ${shouldReconnect}`);
 
       if (shouldReconnect) {
-        startWhatsAppClient();
+        // Add delay before reconnecting to avoid rapid loops
+        setTimeout(() => {
+          startWhatsAppClient();
+        }, 3000);
       }
     }
 
@@ -77,11 +80,14 @@ export async function startWhatsAppClient(): Promise<WASocket> {
     if (type !== 'notify') return;
 
     for (const message of messages) {
-      console.log(`[DEBUG] Message from: ${message.key.remoteJid}, fromMe: ${message.key.fromMe}`);
+      const fromMe = message.key.fromMe ?? false;
+      console.log(`[DEBUG] Message from: ${message.key.remoteJid}, fromMe: ${fromMe}`);
 
-      // Process messages from self (the user triggers the bot by replying)
-      // Skip only if it's not from this device/session
-      if (!message.key.fromMe) continue;
+      // Only process messages from self (user triggers the bot by replying)
+      if (!fromMe) {
+        console.log('[DEBUG] Skipping - not from self');
+        continue;
+      }
 
       try {
         await handleMessage(sock!, message);
