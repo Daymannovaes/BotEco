@@ -6,6 +6,7 @@ export interface VoiceStyle {
   stability?: number; // ElevenLabs parameter (0-1)
   similarity_boost?: number; // ElevenLabs parameter (0-1)
   style?: number; // ElevenLabs parameter (0-1)
+  voiceId?: string; // Voice ID from ElevenLabs library
 }
 
 export const VOICE_STYLES: Record<string, VoiceStyle> = {
@@ -17,6 +18,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.25,
     similarity_boost: 0.7,
     style: 0.85,
+    voiceId: '17emZEdpFxzVxRKIMpMN', // Freaky Frenzy Robot
   },
 
   trailer: {
@@ -27,6 +29,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.4,
     similarity_boost: 0.75,
     style: 0.8,
+    voiceId: '7i7dgyCkKt4c16dLtwT3', // David - Epic Trailer (Brazilian)
   },
 
   pirate: {
@@ -37,6 +40,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.35,
     similarity_boost: 0.7,
     style: 0.75,
+    voiceId: 'kUUTqKQ05NMGulF08DDf', // Guadeloupe Merryweather - Pirate
   },
 
   whisper: {
@@ -47,6 +51,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.8,
     similarity_boost: 0.9,
     style: 0.2,
+    voiceId: 'EeTjZnu1OfgjhGKT6ywY', // Lax Whisper (Brazilian)
   },
 
   excited: {
@@ -57,6 +62,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.2,
     similarity_boost: 0.5,
     style: 1.0,
+    voiceId: 'YU8EsJtXFMyKMxYtheDk', // Mário - Excited (Brazilian)
   },
 
   robot: {
@@ -67,6 +73,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.95,
     similarity_boost: 0.3,
     style: 0.0,
+    voiceId: 'ee2pDOfqzj2pBerZvUCH', // Rocco - Mechanical Robotic
   },
 
   drill_sergeant: {
@@ -77,6 +84,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.15,
     similarity_boost: 0.5,
     style: 1.0,
+    voiceId: 'QWzA13xdHsD8GLBwVILU', // Will - Intense Dramatic (Brazilian)
   },
 
   nature_documentary: {
@@ -87,6 +95,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.65,
     similarity_boost: 0.85,
     style: 0.4,
+    voiceId: 'rVRk0uJAtO8T38Gm03mf', // Danilo Tenfen (Brazilian)
   },
 
   sports: {
@@ -97,6 +106,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.25,
     similarity_boost: 0.65,
     style: 0.85,
+    voiceId: 'v3a2WxCpk7965Lwrexlc', // Gustavo Sancho - Emotive (Brazilian)
   },
 
   grandma: {
@@ -107,6 +117,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.7,
     similarity_boost: 0.85,
     style: 0.35,
+    voiceId: 'RGbeQtiShYRDVCrd9b9w', // Sergio Funny (Brazilian old man)
   },
 
   sarcastic: {
@@ -117,6 +128,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.5,
     similarity_boost: 0.75,
     style: 0.6,
+    voiceId: 'IlrWo5tGgTuxNTHyGhWD', // Vagner de Souza (Brazilian)
   },
 
   angry: {
@@ -127,6 +139,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.2,
     similarity_boost: 0.6,
     style: 0.9,
+    voiceId: 'PSkrmGGNwoOIKXqzUWs9', // Açougueirão - Evil Cartoon (Brazilian)
   },
 
   bored: {
@@ -137,6 +150,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.9,
     similarity_boost: 0.8,
     style: 0.1,
+    voiceId: 'SVgp5d1fyFQRW1eQbwkq', // Lucas - Calm Steady (Brazilian)
   },
 
   news: {
@@ -147,6 +161,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.65,
     similarity_boost: 0.8,
     style: 0.45,
+    voiceId: 'eUAnqvLQWNX29twcYLUM', // Dyego - News Presenter (Brazilian)
   },
 
   shakespearean: {
@@ -157,6 +172,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     stability: 0.35,
     similarity_boost: 0.75,
     style: 0.8,
+    voiceId: 'TzryZkieeczAsBkDJXcH', // Claudio - Vibrant Magnetic (Brazilian)
   },
 };
 

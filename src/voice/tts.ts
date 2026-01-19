@@ -17,7 +17,7 @@ interface TTSRequest {
 }
 
 export async function generateVoice(text: string, style: VoiceStyle): Promise<Buffer> {
-  const voiceId = config.elevenlabs.voiceId;
+  const voiceId = style.voiceId || config.elevenlabs.voiceId;
   const apiKey = config.elevenlabs.apiKey;
 
   if (!apiKey) {
