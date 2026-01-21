@@ -13,19 +13,19 @@ variable "cluster_name" {
 variable "region" {
   description = "Linode region for the cluster"
   type        = string
-  default     = "us-east"  # Newark, NJ
+  default     = "us-east" # Newark, NJ
 }
 
 variable "k8s_version" {
   description = "Kubernetes version"
   type        = string
-  default     = "1.29"
+  default     = "1.33"
 }
 
 variable "node_type" {
   description = "Linode instance type for worker nodes"
   type        = string
-  default     = "g6-standard-2"  # 4GB RAM, 2 vCPU - upgrade to g6-standard-4 (8GB) for production
+  default     = "g6-standard-2" # 4GB RAM, 2 vCPU - upgrade to g6-standard-4 (8GB) for production
 }
 
 variable "node_count" {
