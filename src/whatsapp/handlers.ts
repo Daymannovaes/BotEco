@@ -4,6 +4,143 @@ import { parseStyleInstruction } from '../ai/style-parser.js';
 import { generateVoice } from '../voice/tts.js';
 import { getCachedAudio, cacheAudio } from '../voice/cache.js';
 import { getStylesHelp } from '../voice/styles.js';
+import { addCharacterUsage, findUserById } from '../db/models/user.js';
+import { convertMp3ToOpus } from '../voice/converter.js';
+
+// Multi-tenant message handler
+export async function handleMultiTenantMessage(
+  userId: string,
+  sock: WASocket,
+  message: proto.IWebMessageInfo
+): Promise<void> {
+  const chatId = message.key.remoteJid;
+  if (!chatId) return;
+
+  const messageContent = message.message;
+  if (!messageContent) return;
+
+  const text = extractMessageText(messageContent);
+  if (!text) return;
+
+  console.log(`[User:${userId}] Received: "${text.slice(0, 50)}..."`);
+
+  // Check for help command
+  if (text.toLowerCase() === 'voice help' || text.toLowerCase() === '/voice help') {
+    await sendTextMessageMulti(sock, chatId, getStylesHelp(), message);
+    return;
+  }
+
+  // Check if this is a reply to another message
+  const quotedMessage = extractQuotedMessage(messageContent);
+  if (!quotedMessage) {
+    return;
+  }
+
+  // Get the text from the quoted message
+  const quotedText = extractMessageText(quotedMessage);
+  if (!quotedText) {
+    return;
+  }
+
+  // Parse the style instruction
+  const parsedStyle = parseStyleInstruction(text);
+  if (!parsedStyle) {
+    return;
+  }
+
+  console.log(`[User:${userId}] Processing: "${quotedText.slice(0, 50)}..." as ${parsedStyle.style.name}`);
+
+  // React to show we're processing
+  await sendReactionMulti(sock, chatId, message.key, '🎤');
+
+  try {
+    // Check rate limit
+    const user = await findUserById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    if (user.is_disabled) {
+      throw new Error('Account is disabled');
+    }
+
+    // Check if user has enough character allowance
+    const charCount = quotedText.length;
+    const usageResult = await addCharacterUsage(userId, charCount, quotedText, parsedStyle.style.name);
+
+    if (!usageResult.allowed) {
+      await sendReactionMulti(sock, chatId, message.key, '⚠️');
+      await sendTextMessageMulti(
+        sock,
+        chatId,
+        `Daily character limit reached. Remaining: ${usageResult.remaining} characters. Resets tomorrow.`,
+        message
+      );
+      return;
+    }
+
+    // Check cache first
+    let audioBuffer = await getCachedAudio(quotedText, parsedStyle.style.name);
+
+    if (!audioBuffer) {
+      audioBuffer = await generateVoice(quotedText, parsedStyle.style);
+      await cacheAudio(quotedText, parsedStyle.style.name, audioBuffer);
+    }
+
+    // Send the audio message
+    await sendAudioMessageMulti(sock, chatId, audioBuffer, message);
+    await sendReactionMulti(sock, chatId, message.key, '✅');
+
+    console.log(`[User:${userId}] Audio sent (${usageResult.remaining} chars remaining)`);
+  } catch (error) {
+    console.error(`[User:${userId}] Error:`, error);
+    await sendReactionMulti(sock, chatId, message.key, '❌');
+
+    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+    await sendTextMessageMulti(sock, chatId, `Error: ${errorMsg}`, message);
+  }
+}
+
+// Helper functions for multi-tenant (using explicit socket)
+async function sendAudioMessageMulti(
+  sock: WASocket,
+  jid: string,
+  audioBuffer: Buffer,
+  quotedMessage?: proto.IWebMessageInfo
+): Promise<void> {
+  // Convert MP3 to OGG Opus for WhatsApp mobile compatibility
+  const opusBuffer = await convertMp3ToOpus(audioBuffer);
+
+  await sock.sendMessage(
+    jid,
+    {
+      audio: opusBuffer,
+      mimetype: 'audio/ogg; codecs=opus',
+      ptt: true,
+    },
+    { quoted: quotedMessage }
+  );
+}
+
+async function sendTextMessageMulti(
+  sock: WASocket,
+  jid: string,
+  text: string,
+  quotedMessage?: proto.IWebMessageInfo
+): Promise<void> {
+  await sock.sendMessage(jid, { text }, { quoted: quotedMessage });
+}
+
+async function sendReactionMulti(
+  sock: WASocket,
+  jid: string,
+  messageKey: proto.IMessageKey,
+  emoji: string
+): Promise<void> {
+  await sock.sendMessage(jid, {
+    react: { text: emoji, key: messageKey },
+  });
+}
 
 export async function handleMessage(
   sock: WASocket,

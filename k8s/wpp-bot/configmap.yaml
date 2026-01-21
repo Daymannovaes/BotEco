@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wpp-bot-config
+  namespace: wpp-bot
+data:
+  NODE_ENV: production
+  LOG_LEVEL: info
+  API_PORT: "3000"
+  CORS_ORIGINS: "https://dashboard.yourdomain.com"
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  DB_USER: wppbot
+  DB_NAME: wppbot
+  BOT_PREFIX: "voice:"
+  DAILY_LIMIT: "10000"
+  JWT_ACCESS_EXPIRY: "15m"
+  JWT_REFRESH_EXPIRY: "7d"
+  ELEVENLABS_VOICE_ID: "21m00Tcm4TlvDq8ikWAM"

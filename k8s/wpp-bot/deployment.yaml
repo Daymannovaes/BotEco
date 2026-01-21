@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wpp-bot
+  namespace: wpp-bot
+  labels:
+    app: wpp-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wpp-bot
+  strategy:
+    type: Recreate  # Important: only one instance for WhatsApp sessions
+  template:
+    metadata:
+      labels:
+        app: wpp-bot
+    spec:
+      containers:
+        - name: wpp-bot
+          image: ghcr.io/YOUR_USERNAME/wpp-bot:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: wpp-bot-config
+          env:
+            - name: ELEVENLABS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: wpp-bot-secret
+                  key: ELEVENLABS_API_KEY
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: wpp-bot-secret
+                  key: JWT_SECRET
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wpp-bot-secret
+                  key: DB_PASSWORD
+          volumeMounts:
+            - name: auth-info
+              mountPath: /app/auth_info
+            - name: cache
+              mountPath: /app/cache
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+      volumes:
+        - name: auth-info
+          persistentVolumeClaim:
+            claimName: wpp-bot-auth-pvc
+        - name: cache
+          persistentVolumeClaim:
+            claimName: wpp-bot-cache-pvc
+      imagePullSecrets:
+        - name: ghcr-secret

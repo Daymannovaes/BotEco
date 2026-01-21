@@ -11,6 +11,7 @@ import pino from 'pino';
 import qrcodeTerminal from 'qrcode-terminal';
 import { config } from '../config.js';
 import { handleMessage } from './handlers.js';
+import { convertMp3ToOpus } from '../voice/converter.js';
 
 let sock: WASocket | null = null;
 
@@ -115,11 +116,14 @@ export async function sendAudioMessage(
 ): Promise<void> {
   if (!sock) throw new Error('WhatsApp not connected');
 
+  // Convert MP3 to OGG Opus for WhatsApp mobile compatibility
+  const opusBuffer = await convertMp3ToOpus(audioBuffer);
+
   await sock.sendMessage(
     jid,
     {
-      audio: audioBuffer,
-      mimetype: 'audio/mpeg',
+      audio: opusBuffer,
+      mimetype: 'audio/ogg; codecs=opus',
       ptt: true, // Send as voice note
     },
     {

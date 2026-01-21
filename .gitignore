@@ -6,6 +6,8 @@ dist/
 
 # Environment
 .env
+.env.local
+.env.production
 
 # WhatsApp session data
 auth_info/
@@ -15,6 +17,7 @@ session/
 cache/
 
 # Logs
+logs/
 *.log
 
 # IDE
@@ -26,3 +29,14 @@ cache/
 # OS
 .DS_Store
 Thumbs.db
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/kubeconfig.yaml
+terraform/terraform.tfvars
+
+# Dashboard
+dashboard/node_modules/
+dashboard/dist/

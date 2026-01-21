@@ -1,30 +1,66 @@
 # VoiceReply Bot
 
-A WhatsApp bot that transforms any message into a voice message with a fun character/style.
+A multi-tenant WhatsApp voice bot SaaS platform that transforms any message into a voice message with fun character styles.
+
+## Features
+
+- **Multi-tenant SaaS**: Multiple users with their own WhatsApp connections
+- **Web Dashboard**: User registration, QR code scanning, status monitoring
+- **15 Voice Styles**: From villain to pirate to sports announcer
+- **Rate Limiting**: Per-user daily character limits
+- **Session Persistence**: Automatic session restoration on restart
+- **Kubernetes Ready**: Deploy on Linode LKE with Terraform
 
 ## How It Works
 
-1. Reply to any message in a chat
-2. Type a style instruction like "say it like a villain" or "read this dramatically"
-3. Bot sends back an audio message with the text spoken in that style
+1. Register on the web dashboard
+2. Scan QR code to connect your WhatsApp
+3. Reply to any message with a style instruction like "say it like a villain"
+4. Bot sends back an audio message with the text spoken in that style
 
-## Quick Start
+## Quick Start (Local Development)
 
 ```bash
 # Install dependencies
 npm install
 
+# Start PostgreSQL
+docker-compose up -d postgres
+
 # Copy environment file and add your API key
 cp .env.example .env
-
-# Edit .env and add your ElevenLabs API key
-# ELEVENLABS_API_KEY=your_key_here
+# Edit .env with your ElevenLabs API key and other settings
 
 # Start the bot
 npm run dev
 ```
 
-On first run, scan the QR code with WhatsApp to authenticate.
+The API server will be available at `http://localhost:3000`.
+
+## Quick Start (Dashboard)
+
+```bash
+cd dashboard
+npm install
+npm run dev
+```
+
+The dashboard will be available at `http://localhost:5173`.
+
+## API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/auth/register` | POST | Create new account |
+| `/auth/login` | POST | Login to get JWT token |
+| `/auth/me` | GET | Get current user (requires JWT) |
+| `/users/me/qr` | GET | Get QR code for WhatsApp |
+| `/users/me/status` | GET | Get connection status |
+| `/users/me/disconnect` | POST | Disconnect WhatsApp |
+| `/users/me/logout` | POST | Logout from WhatsApp |
+| `/health` | GET | Health check |
+| `/health/ready` | GET | Kubernetes readiness probe |
+| `/health/live` | GET | Kubernetes liveness probe |
 
 ## Usage Examples
 
@@ -98,8 +134,99 @@ wpp-bot/
 - `npm run build` - Build TypeScript to JavaScript
 - `npm start` - Run built JavaScript
 
+## Deployment to Linode LKE
+
+### 1. Create Infrastructure
+
+```bash
+cd terraform
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars with your Linode API token
+
+terraform init
+terraform apply
+```
+
+### 2. Build and Push Docker Images
+
+```bash
+# Login to GitHub Container Registry
+echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
+
+# Build and push bot
+docker build -t ghcr.io/USERNAME/wpp-bot:latest .
+docker push ghcr.io/USERNAME/wpp-bot:latest
+
+# Build and push dashboard
+docker build -t ghcr.io/USERNAME/wpp-dashboard:latest dashboard/
+docker push ghcr.io/USERNAME/wpp-dashboard:latest
+```
+
+### 3. Deploy to Kubernetes
+
+```bash
+# Get kubeconfig
+export KUBECONFIG=$(pwd)/terraform/kubeconfig.yaml
+
+# Create namespace
+kubectl apply -f k8s/namespace.yaml
+
+# Deploy PostgreSQL
+kubectl apply -f k8s/postgres/
+
+# Update secrets in k8s/wpp-bot/secret.yaml
+kubectl apply -f k8s/wpp-bot/
+
+# Deploy dashboard
+kubectl apply -f k8s/dashboard/
+
+# Deploy ingress
+kubectl apply -f k8s/ingress.yaml
+```
+
+## Project Structure
+
+```
+wpp-bot/
+├── src/
+│   ├── index.ts              # Entry point
+│   ├── config.ts             # Environment config
+│   ├── api/                  # HTTP API (Express)
+│   │   ├── server.ts
+│   │   ├── routes/
+│   │   └── middleware/
+│   ├── sessions/             # Multi-session management
+│   │   ├── manager.ts
+│   │   ├── restore.ts
+│   │   └── types.ts
+│   ├── db/                   # PostgreSQL layer
+│   │   ├── client.ts
+│   │   └── models/
+│   ├── whatsapp/
+│   │   ├── client.ts
+│   │   ├── handlers.ts
+│   │   └── session.ts
+│   ├── voice/
+│   │   ├── tts.ts
+│   │   ├── styles.ts
+│   │   └── cache.ts
+│   └── ai/
+│       └── style-parser.ts
+├── dashboard/                # React web dashboard
+├── terraform/                # Linode LKE infrastructure
+├── k8s/                      # Kubernetes manifests
+├── Dockerfile
+├── docker-compose.yml
+└── package.json
+```
+
+## Environment Variables
+
+See `.env.example` for all available configuration options.
+
 ## Notes
 
 - The bot caches generated audio for 24 hours to save API costs
 - ElevenLabs free tier includes ~10,000 characters/month
-- WhatsApp session is persisted in `auth_info/` directory
+- WhatsApp sessions are persisted per-user in `auth_info/{userId}/`
+- Estimated monthly cost on Linode: ~$50 (8GB node + storage)

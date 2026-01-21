@@ -18,7 +18,29 @@ export const config = {
   // Bot settings
   bot: {
     prefix: process.env.BOT_PREFIX || 'voice:',
-    dailyLimit: parseInt(process.env.DAILY_LIMIT || '50', 10),
+    dailyLimit: parseInt(process.env.DAILY_LIMIT || '10000', 10),
+  },
+
+  // Database
+  database: {
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '5432', 10),
+    user: process.env.DB_USER || 'wppbot',
+    password: process.env.DB_PASSWORD || 'wppbot_dev_password',
+    name: process.env.DB_NAME || 'wppbot',
+  },
+
+  // JWT Authentication
+  jwt: {
+    secret: process.env.JWT_SECRET || 'dev-secret-change-in-production',
+    accessTokenExpiry: process.env.JWT_ACCESS_EXPIRY || '15m',
+    refreshTokenExpiry: process.env.JWT_REFRESH_EXPIRY || '7d',
+  },
+
+  // API Server
+  api: {
+    port: parseInt(process.env.API_PORT || '3000', 10),
+    corsOrigins: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:5173'],
   },
 
   // Paths
@@ -30,13 +52,26 @@ export const config = {
 
   // Logging
   logLevel: process.env.LOG_LEVEL || 'info',
+
+  // Environment
+  isProduction: process.env.NODE_ENV === 'production',
 } as const;
+
+export function getAuthInfoPath(userId: string): string {
+  return join(config.paths.authInfo, userId);
+}
 
 export function validateConfig(): void {
   const errors: string[] = [];
 
   if (!config.elevenlabs.apiKey) {
     errors.push('ELEVENLABS_API_KEY is required');
+  }
+
+  if (config.isProduction) {
+    if (config.jwt.secret === 'dev-secret-change-in-production') {
+      errors.push('JWT_SECRET must be set in production');
+    }
   }
 
   if (errors.length > 0) {
