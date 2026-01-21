@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: wpp-dashboard
-          image: ghcr.io/YOUR_USERNAME/wpp-dashboard:latest
+          image: ghcr.io/daymannovaes/wpp-dashboard:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80

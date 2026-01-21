@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: wpp-bot
-          image: ghcr.io/YOUR_USERNAME/wpp-bot:latest
+          image: ghcr.io/daymannovaes/wpp-bot:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
