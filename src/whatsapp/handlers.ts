@@ -25,7 +25,7 @@ export async function handleMultiTenantMessage(
   console.log(`[User:${userId}] Received: "${text.slice(0, 50)}..."`);
 
   // Check for help command
-  if (text.toLowerCase() === 'voice help' || text.toLowerCase() === '/voice help') {
+  if (text.toLowerCase() === 'boteco ajuda' || text.toLowerCase() === '/boteco ajuda') {
     await sendTextMessageMulti(sock, chatId, getStylesHelp(), message);
     return;
   }
@@ -160,7 +160,7 @@ export async function handleMessage(
   console.log(`[DEBUG] Received message: "${text.slice(0, 50)}..."`);
 
   // Check for help command
-  if (text.toLowerCase() === 'voice help' || text.toLowerCase() === '/voice help') {
+  if (text.toLowerCase() === 'boteco ajuda' || text.toLowerCase() === '/boteco ajuda') {
     await sendTextMessage(chatId, getStylesHelp(), message);
     return;
   }

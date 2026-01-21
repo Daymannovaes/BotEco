@@ -1,5 +1,6 @@
 import { query } from '../client.js';
 import bcrypt from 'bcrypt';
+import { config } from '../../config.js';
 
 export type UserStatus = 'pending' | 'qr_ready' | 'connected' | 'disconnected';
 
@@ -46,10 +47,10 @@ export async function createUser(input: CreateUserInput): Promise<User> {
   const passwordHash = await bcrypt.hash(input.password, SALT_ROUNDS);
 
   const result = await query<User>(
-    `INSERT INTO users (email, password_hash)
-     VALUES ($1, $2)
+    `INSERT INTO users (email, password_hash, daily_chars_limit)
+     VALUES ($1, $2, $3)
      RETURNING *`,
-    [input.email.toLowerCase(), passwordHash]
+    [input.email.toLowerCase(), passwordHash, config.bot.dailyLimit]
   );
 
   return result.rows[0];

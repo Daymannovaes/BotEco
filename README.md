@@ -74,7 +74,7 @@ Reply to any message with:
 - `robot voice` - Monotone, mechanical
 - `read it like a sports announcer` - Excited commentary
 
-Type `voice help` in any chat to see all available styles.
+Type `boteco ajuda` in any chat to see all available styles.
 
 ## Available Voice Styles
 

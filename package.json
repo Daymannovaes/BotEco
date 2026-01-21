@@ -10,6 +10,7 @@
     "dev": "tsx watch src/index.ts",
     "dev:db": "docker-compose up -d postgres",
     "dev:full": "docker-compose up -d && npm run dev",
+    "dev:all": "concurrently -n bot,dash,land -c blue,green,magenta \"npm run dev\" \"npm run dev --prefix dashboard\" \"npm run dev --prefix landing\"",
     "db:migrate": "node dist/db/migrate.js",
     "lint": "eslint src --ext .ts",
     "test": "vitest"
@@ -47,6 +48,7 @@
     "@types/pg": "^8.11.10",
     "@types/qrcode": "^1.5.5",
     "@types/qrcode-terminal": "^0.12.2",
+    "concurrently": "^9.2.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "vitest": "^4.0.17"

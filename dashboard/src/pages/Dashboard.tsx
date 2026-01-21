@@ -202,7 +202,7 @@ export default function Dashboard() {
 
               <div className="mt-4 p-3 bg-gray-700 rounded-lg">
                 <p className="text-gray-300 text-sm font-mono">
-                  "voice help" - Ver todos os estilos disponíveis
+                  "boteco ajuda" - Ver todos os estilos disponíveis
                 </p>
               </div>
             </div>
