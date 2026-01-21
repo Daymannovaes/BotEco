@@ -10,7 +10,7 @@ export interface VoiceStyle {
 }
 
 export const VOICE_STYLES: Record<string, VoiceStyle> = {
-  villain: {
+  vilao: {
     name: 'Vilão de Filme',
     description: 'Ameaçador, lento, pausas dramáticas',
     prompt: 'Speak like a menacing movie villain with dramatic pauses, slow and deliberate delivery, emphasizing key words ominously.',
@@ -32,7 +32,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: '7i7dgyCkKt4c16dLtwT3', // David - Epic Trailer (Brazilian)
   },
 
-  pirate: {
+  pirata: {
     name: 'Pirata',
     description: 'Estilo "arrr" de marujo',
     prompt: 'Speak like a gruff sea pirate, with "arrr"s and nautical expressions. Roll the R sounds and be boisterous.',
@@ -43,7 +43,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'kUUTqKQ05NMGulF08DDf', // Guadeloupe Merryweather - Pirate
   },
 
-  whisper: {
+  sussurro: {
     name: 'Sussurro/ASMR',
     description: 'Sussurro suave e íntimo',
     prompt: 'Whisper softly and intimately, like an ASMR video. Very gentle and soothing.',
@@ -54,7 +54,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'EeTjZnu1OfgjhGKT6ywY', // Lax Whisper (Brazilian)
   },
 
-  excited: {
+  animado: {
     name: 'Animado',
     description: 'Alta energia, entusiasmado',
     prompt: 'Speak with extreme enthusiasm and excitement, like you just received amazing news!',
@@ -65,7 +65,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'YU8EsJtXFMyKMxYtheDk', // Mário - Excited (Brazilian)
   },
 
-  robot: {
+  robo: {
     name: 'Robô',
     description: 'Monótono, mecânico',
     prompt: 'Speak in a flat, monotone robotic voice. Very mechanical and precise.',
@@ -76,7 +76,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'ee2pDOfqzj2pBerZvUCH', // Rocco - Mechanical Robotic
   },
 
-  drill_sergeant: {
+  sargento: {
     name: 'Sargento',
     description: 'Alto, comandante',
     prompt: 'Bark commands like a military drill sergeant. Loud, authoritative, and demanding.',
@@ -87,7 +87,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'QWzA13xdHsD8GLBwVILU', // Will - Intense Dramatic (Brazilian)
   },
 
-  nature_documentary: {
+  documentario: {
     name: 'Documentário de Natureza',
     description: 'Calmo, narrador observador',
     prompt: 'Speak in a calm, measured tone like a nature documentary narrator observing wildlife. Thoughtful pauses and wonder.',
@@ -98,7 +98,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'rVRk0uJAtO8T38Gm03mf', // Danilo Tenfen (Brazilian)
   },
 
-  sports: {
+  esportivo: {
     name: 'Narrador Esportivo',
     description: 'Animado, comentário acelerado',
     prompt: 'Deliver like an excited sports announcer calling a big play. Fast-paced, energetic, building tension!',
@@ -109,7 +109,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'v3a2WxCpk7965Lwrexlc', // Gustavo Sancho - Emotive (Brazilian)
   },
 
-  grandma: {
+  vovo: {
     name: 'Vovó Querida',
     description: 'Doce, lento, carinhoso',
     prompt: 'Speak like a sweet, loving grandmother. Warm, gentle, and caring with a soft tone.',
@@ -120,7 +120,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'RGbeQtiShYRDVCrd9b9w', // Sergio Funny (Brazilian old man)
   },
 
-  sarcastic: {
+  sarcastico: {
     name: 'Sarcástico',
     description: 'Tom irônico e debochado',
     prompt: 'Deliver with heavy sarcasm and a deadpan tone. Dripping with irony.',
@@ -131,7 +131,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'IlrWo5tGgTuxNTHyGhWD', // Vagner de Souza (Brazilian)
   },
 
-  angry: {
+  bravo: {
     name: 'Bravo',
     description: 'Furioso, agressivo',
     prompt: 'Speak with intense anger and frustration. Aggressive and heated.',
@@ -142,7 +142,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'PSkrmGGNwoOIKXqzUWs9', // Açougueirão - Evil Cartoon (Brazilian)
   },
 
-  bored: {
+  entediado: {
     name: 'Entediado',
     description: 'Desinteressado, preguiçoso',
     prompt: 'Speak with complete boredom and disinterest. Lazy, drawn-out, like you could not care less.',
@@ -153,7 +153,7 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'SVgp5d1fyFQRW1eQbwkq', // Lucas - Calm Steady (Brazilian)
   },
 
-  news: {
+  jornal: {
     name: 'Âncora de Jornal',
     description: 'Profissional, autoritário',
     prompt: 'Deliver like a professional news anchor. Clear, authoritative, and measured.',
@@ -164,8 +164,8 @@ export const VOICE_STYLES: Record<string, VoiceStyle> = {
     voiceId: 'eUAnqvLQWNX29twcYLUM', // Dyego - News Presenter (Brazilian)
   },
 
-  shakespearean: {
-    name: 'Shakespeariano',
+  teatral: {
+    name: 'Teatral',
     description: 'Teatral, dramático',
     prompt: 'Perform with theatrical Shakespearean flair. Grand, dramatic, with classical actor energy.',
     aliases: ['shakespeare', 'shakespearean', 'theatrical', 'actor', 'stage', 'dramatic actor', 'teatro', 'teatral', 'ator', 'dramático', 'dramatico'],
