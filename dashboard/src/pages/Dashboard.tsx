@@ -15,6 +15,14 @@ interface Status {
   };
 }
 
+const statusLabels: Record<string, string> = {
+  connected: 'Conectado',
+  disconnected: 'Desconectado',
+  qr_ready: 'Aguardando QR',
+  pending: 'Pendente',
+  initializing: 'Inicializando',
+};
+
 export default function Dashboard() {
   const { user, logout } = useAuth();
   const [status, setStatus] = useState<Status | null>(null);
@@ -78,7 +86,7 @@ export default function Dashboard() {
               onClick={logout}
               className="text-gray-400 hover:text-white transition-colors"
             >
-              Sign out
+              Sair
             </button>
           </div>
         </div>
@@ -87,27 +95,27 @@ export default function Dashboard() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         {loading ? (
-          <div className="text-center text-gray-400 py-12">Loading...</div>
+          <div className="text-center text-gray-400 py-12">Carregando...</div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Connection Status Card */}
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
               <h2 className="text-lg font-semibold text-white mb-4">
-                WhatsApp Connection
+                Conexão WhatsApp
               </h2>
 
               <div className="flex items-center gap-3 mb-4">
                 <div
                   className={`w-3 h-3 rounded-full ${getStatusColor(status?.status || 'pending')}`}
                 />
-                <span className="text-white capitalize">
-                  {status?.status || 'Not connected'}
+                <span className="text-white">
+                  {statusLabels[status?.status || 'pending'] || 'Não conectado'}
                 </span>
               </div>
 
               {status?.phoneNumber && (
                 <p className="text-gray-400 mb-4">
-                  Phone: {status.phoneNumber}
+                  Telefone: {status.phoneNumber}
                 </p>
               )}
 
@@ -117,7 +125,7 @@ export default function Dashboard() {
                     to="/connect"
                     className="block w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white text-center font-medium rounded-lg transition-colors"
                   >
-                    Connect WhatsApp
+                    Conectar WhatsApp
                   </Link>
                 )}
 
@@ -128,14 +136,14 @@ export default function Dashboard() {
                       disabled={actionLoading}
                       className="w-full py-2 px-4 bg-gray-700 hover:bg-gray-600 disabled:opacity-50 text-white font-medium rounded-lg transition-colors"
                     >
-                      Disconnect
+                      Desconectar
                     </button>
                     <button
                       onClick={handleLogoutWhatsApp}
                       disabled={actionLoading}
                       className="w-full py-2 px-4 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-medium rounded-lg transition-colors"
                     >
-                      Logout from WhatsApp
+                      Sair do WhatsApp
                     </button>
                   </>
                 )}
@@ -145,15 +153,15 @@ export default function Dashboard() {
             {/* Usage Card */}
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
               <h2 className="text-lg font-semibold text-white mb-4">
-                Daily Usage
+                Uso Diário
               </h2>
 
               <div className="mb-4">
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-400">Characters used</span>
+                  <span className="text-gray-400">Caracteres usados</span>
                   <span className="text-white">
-                    {status?.usage.dailyCharsUsed.toLocaleString()} /{' '}
-                    {status?.usage.dailyCharsLimit.toLocaleString()}
+                    {status?.usage.dailyCharsUsed.toLocaleString('pt-BR')} /{' '}
+                    {status?.usage.dailyCharsLimit.toLocaleString('pt-BR')}
                   </span>
                 </div>
                 <div className="w-full bg-gray-700 rounded-full h-2">
@@ -167,34 +175,34 @@ export default function Dashboard() {
               </div>
 
               <p className="text-gray-400 text-sm">
-                {status?.usage.remaining.toLocaleString()} characters remaining today
+                {status?.usage.remaining.toLocaleString('pt-BR')} caracteres restantes hoje
               </p>
             </div>
 
             {/* How to Use Card */}
             <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
               <h2 className="text-lg font-semibold text-white mb-4">
-                How to Use
+                Como Usar
               </h2>
 
               <ol className="space-y-3 text-gray-400 text-sm">
                 <li className="flex gap-2">
                   <span className="text-green-500 font-bold">1.</span>
-                  Reply to any message in WhatsApp
+                  Responda qualquer mensagem no WhatsApp
                 </li>
                 <li className="flex gap-2">
                   <span className="text-green-500 font-bold">2.</span>
-                  Type a style instruction like "say it like a villain"
+                  Digite uma instrução como "fale como um vilão"
                 </li>
                 <li className="flex gap-2">
                   <span className="text-green-500 font-bold">3.</span>
-                  Receive a voice message in that style
+                  Receba uma mensagem de voz nesse estilo
                 </li>
               </ol>
 
               <div className="mt-4 p-3 bg-gray-700 rounded-lg">
                 <p className="text-gray-300 text-sm font-mono">
-                  "voice help" - See all available styles
+                  "voice help" - Ver todos os estilos disponíveis
                 </p>
               </div>
             </div>

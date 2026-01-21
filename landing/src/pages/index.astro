@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import VoiceDemo from '../components/VoiceDemo.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Features from '../components/Features.astro';
+import Pricing from '../components/Pricing.astro';
+import FAQ from '../components/FAQ.astro';
+import CTA from '../components/CTA.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="BotEco - Transforme Mensagens do WhatsApp em Áudios Épicos">
+  <Header />
+  <main>
+    <Hero />
+    <VoiceDemo />
+    <HowItWorks />
+    <Features />
+    <Pricing />
+    <FAQ />
+    <CTA />
+  </main>
+  <Footer />
+
+  <!-- Sticky Mobile CTA -->
+  <div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-gray-950 via-gray-950/95 to-transparent md:hidden z-40">
+    <a
+      href="/conectar"
+      class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-whatsapp-light to-whatsapp-dark text-white font-bold py-4 rounded-full text-lg shadow-xl shadow-whatsapp-light/30"
+    >
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12c0 1.74.45 3.37 1.23 4.79L2 22l5.35-1.21C8.71 21.55 10.32 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+      </svg>
+      Começar Grátis
+    </a>
+  </div>
+</BaseLayout>

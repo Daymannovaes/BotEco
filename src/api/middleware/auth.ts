@@ -47,7 +47,7 @@ export async function authMiddleware(
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Missing or invalid authorization header' });
+    res.status(401).json({ error: 'Cabeçalho de autorização ausente ou inválido' });
     return;
   }
 
@@ -55,19 +55,19 @@ export async function authMiddleware(
   const payload = verifyToken(token);
 
   if (!payload) {
-    res.status(401).json({ error: 'Invalid or expired token' });
+    res.status(401).json({ error: 'Token inválido ou expirado' });
     return;
   }
 
   const user = await findUserById(payload.userId);
 
   if (!user) {
-    res.status(401).json({ error: 'User not found' });
+    res.status(401).json({ error: 'Usuário não encontrado' });
     return;
   }
 
   if (user.is_disabled) {
-    res.status(403).json({ error: 'Account is disabled' });
+    res.status(403).json({ error: 'Conta desativada' });
     return;
   }
 

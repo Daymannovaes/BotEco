@@ -10,24 +10,24 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).json({ error: 'Email and password are required' });
+      res.status(400).json({ error: 'E-mail e senha são obrigatórios' });
       return;
     }
 
     if (typeof email !== 'string' || !email.includes('@')) {
-      res.status(400).json({ error: 'Invalid email format' });
+      res.status(400).json({ error: 'Formato de e-mail inválido' });
       return;
     }
 
     if (typeof password !== 'string' || password.length < 8) {
-      res.status(400).json({ error: 'Password must be at least 8 characters' });
+      res.status(400).json({ error: 'A senha deve ter pelo menos 8 caracteres' });
       return;
     }
 
     // Check if user exists
     const existing = await findUserByEmail(email);
     if (existing) {
-      res.status(409).json({ error: 'Email already registered' });
+      res.status(409).json({ error: 'E-mail já cadastrado' });
       return;
     }
 
@@ -43,7 +43,7 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
     });
   } catch (err) {
     console.error('[Auth] Register error:', err);
-    res.status(500).json({ error: 'Registration failed' });
+    res.status(500).json({ error: 'Falha no cadastro' });
   }
 });
 
@@ -53,24 +53,24 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).json({ error: 'Email and password are required' });
+      res.status(400).json({ error: 'E-mail e senha são obrigatórios' });
       return;
     }
 
     const user = await findUserByEmail(email);
     if (!user) {
-      res.status(401).json({ error: 'Invalid email or password' });
+      res.status(401).json({ error: 'E-mail ou senha inválidos' });
       return;
     }
 
     const valid = await verifyPassword(user, password);
     if (!valid) {
-      res.status(401).json({ error: 'Invalid email or password' });
+      res.status(401).json({ error: 'E-mail ou senha inválidos' });
       return;
     }
 
     if (user.is_disabled) {
-      res.status(403).json({ error: 'Account is disabled' });
+      res.status(403).json({ error: 'Conta desativada' });
       return;
     }
 
@@ -84,7 +84,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     });
   } catch (err) {
     console.error('[Auth] Login error:', err);
-    res.status(500).json({ error: 'Login failed' });
+    res.status(500).json({ error: 'Falha no login' });
   }
 });
 
@@ -94,19 +94,19 @@ router.post('/refresh', async (req: Request, res: Response): Promise<void> => {
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
-      res.status(400).json({ error: 'Refresh token is required' });
+      res.status(400).json({ error: 'Token de atualização é obrigatório' });
       return;
     }
 
     const payload = verifyToken(refreshToken);
     if (!payload) {
-      res.status(401).json({ error: 'Invalid or expired refresh token' });
+      res.status(401).json({ error: 'Token inválido ou expirado' });
       return;
     }
 
     const user = await findUserByEmail(payload.email);
     if (!user || user.is_disabled) {
-      res.status(401).json({ error: 'User not found or disabled' });
+      res.status(401).json({ error: 'Usuário não encontrado ou desativado' });
       return;
     }
 
@@ -119,14 +119,14 @@ router.post('/refresh', async (req: Request, res: Response): Promise<void> => {
     });
   } catch (err) {
     console.error('[Auth] Refresh error:', err);
-    res.status(500).json({ error: 'Token refresh failed' });
+    res.status(500).json({ error: 'Falha ao atualizar token' });
   }
 });
 
 // GET /auth/me - Get current user (requires auth)
 router.get('/me', authMiddleware, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   if (!req.user) {
-    res.status(401).json({ error: 'Not authenticated' });
+    res.status(401).json({ error: 'Não autenticado' });
     return;
   }
 

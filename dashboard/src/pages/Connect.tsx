@@ -60,7 +60,7 @@ export default function Connect() {
             to="/dashboard"
             className="text-gray-400 hover:text-white transition-colors"
           >
-            Back to Dashboard
+            Voltar ao Painel
           </Link>
         </div>
       </header>
@@ -69,26 +69,26 @@ export default function Connect() {
       <main className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="max-w-md w-full text-center">
           <h2 className="text-3xl font-bold text-white mb-2">
-            Connect WhatsApp
+            Conectar WhatsApp
           </h2>
           <p className="text-gray-400 mb-8">
-            Scan the QR code with your WhatsApp app
+            Escaneie o QR code com seu WhatsApp
           </p>
 
           {status === 'loading' && (
             <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-              <div className="text-gray-400">Generating QR code...</div>
+              <div className="text-gray-400">Gerando QR code...</div>
             </div>
           )}
 
           {status === 'error' && (
             <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-              <div className="text-red-500 mb-4">{error || 'Failed to generate QR code'}</div>
+              <div className="text-red-500 mb-4">{error || 'Falha ao gerar QR code'}</div>
               <button
                 onClick={fetchQRCode}
                 className="py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
               >
-                Try Again
+                Tentar Novamente
               </button>
             </div>
           )}
@@ -97,37 +97,37 @@ export default function Connect() {
             <div className="bg-white rounded-lg p-4 inline-block">
               <img
                 src={qrCode}
-                alt="WhatsApp QR Code"
+                alt="QR Code do WhatsApp"
                 className="w-64 h-64"
               />
             </div>
           )}
 
           <div className="mt-8 space-y-4">
-            <h3 className="text-lg font-semibold text-white">Instructions</h3>
+            <h3 className="text-lg font-semibold text-white">Instruções</h3>
             <ol className="text-left text-gray-400 space-y-2">
               <li className="flex gap-2">
                 <span className="text-green-500 font-bold">1.</span>
-                Open WhatsApp on your phone
+                Abra o WhatsApp no seu celular
               </li>
               <li className="flex gap-2">
                 <span className="text-green-500 font-bold">2.</span>
-                Tap Menu or Settings and select "Linked Devices"
+                Toque em Menu ou Configurações e selecione "Aparelhos Conectados"
               </li>
               <li className="flex gap-2">
                 <span className="text-green-500 font-bold">3.</span>
-                Tap "Link a Device"
+                Toque em "Conectar um Aparelho"
               </li>
               <li className="flex gap-2">
                 <span className="text-green-500 font-bold">4.</span>
-                Point your phone at this screen to scan the QR code
+                Aponte o celular para esta tela para escanear o QR code
               </li>
             </ol>
           </div>
 
           {status === 'qr_ready' && (
             <p className="mt-6 text-gray-500 text-sm">
-              Waiting for scan... This page will redirect automatically when connected.
+              Aguardando escaneamento... Esta página redirecionará automaticamente quando conectado.
             </p>
           )}
         </div>

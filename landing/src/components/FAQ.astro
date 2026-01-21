@@ -1,0 +1,92 @@
+---
+const faqs = [
+  {
+    question: 'Como eu começo a usar?',
+    answer: 'É super simples! Clique em "Começar Grátis", escaneie o QR code com seu WhatsApp e pronto. Você já pode começar a transformar mensagens em áudios estilizados respondendo qualquer mensagem com o estilo desejado.',
+  },
+  {
+    question: 'Funciona em qual versão do WhatsApp?',
+    answer: 'O BotEco funciona com WhatsApp normal e WhatsApp Business, tanto no celular quanto no WhatsApp Web. Basta escanear o QR code uma vez e você está conectado.',
+  },
+  {
+    question: 'Meus dados estão seguros?',
+    answer: 'Sim! Nós só processamos as mensagens que você explicitamente pede para transformar em áudio. Não armazenamos suas conversas e todo o processamento é feito de forma segura usando criptografia.',
+  },
+  {
+    question: 'Posso usar vozes personalizadas?',
+    answer: 'No plano Business, oferecemos a opção de criar vozes customizadas baseadas em amostras de áudio. Entre em contato com nossa equipe para saber mais sobre essa funcionalidade.',
+  },
+  {
+    question: 'Quantos caracteres tem uma mensagem?',
+    answer: 'Cada mensagem pode ter até 500 caracteres. Mensagens maiores serão automaticamente cortadas. Isso é suficiente para a grande maioria dos casos de uso.',
+  },
+  {
+    question: 'E se eu gastar todas as minhas mensagens?',
+    answer: 'Você pode fazer upgrade do seu plano a qualquer momento. Se estiver no plano gratuito, você receberá um aviso quando estiver perto do limite e poderá continuar usando no mês seguinte.',
+  },
+  {
+    question: 'Posso cancelar minha assinatura?',
+    answer: 'Sim, você pode cancelar a qualquer momento. Não há multa ou período de carência. Seu acesso continua até o final do período já pago.',
+  },
+];
+---
+
+<section id="faq" class="relative py-24 overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950"></div>
+
+  <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <span class="inline-block bg-whatsapp-dark/20 border border-whatsapp-light/30 rounded-full px-4 py-1.5 text-whatsapp-light text-sm font-medium mb-4">
+        FAQ
+      </span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+        Perguntas <span class="bg-gradient-to-r from-whatsapp-light to-emerald-400 bg-clip-text text-transparent">Frequentes</span>
+      </h2>
+      <p class="text-xl text-gray-400">
+        Tudo que você precisa saber sobre o BotEco.
+      </p>
+    </div>
+
+    <!-- FAQ Accordion -->
+    <div class="space-y-4">
+      {faqs.map((faq, index) => (
+        <details
+          class="group bg-gray-900/50 backdrop-blur border border-gray-800 rounded-xl overflow-hidden hover:border-gray-700 transition-colors"
+        >
+          <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
+            <h3 class="text-white font-semibold pr-4">{faq.question}</h3>
+            <div class="flex-shrink-0 w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center group-open:bg-whatsapp-dark transition-colors">
+              <svg
+                class="w-4 h-4 text-gray-400 group-open:text-white group-open:rotate-180 transition-all duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </summary>
+          <div class="px-6 pb-6">
+            <p class="text-gray-400 leading-relaxed">{faq.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <!-- Contact CTA -->
+    <div class="mt-12 text-center">
+      <p class="text-gray-400 mb-4">Ainda tem dúvidas?</p>
+      <a
+        href="mailto:contato@boteco.app"
+        class="inline-flex items-center gap-2 text-whatsapp-light hover:text-white transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+        Entre em contato conosco
+      </a>
+    </div>
+  </div>
+</section>

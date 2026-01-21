@@ -1,0 +1,57 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-gray-900 border-t border-gray-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+      <!-- Logo and Description -->
+      <div class="flex flex-col items-center md:items-start gap-4">
+        <a href="/" class="flex items-center gap-2">
+          <div class="w-10 h-10 bg-gradient-to-br from-whatsapp-light to-whatsapp-dark rounded-xl flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12c0 1.74.45 3.37 1.23 4.79L2 22l5.35-1.21C8.71 21.55 10.32 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.52 0-2.95-.39-4.18-1.08l-.3-.18-3.12.82.83-3.04-.2-.31A7.96 7.96 0 014 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/>
+              <path d="M16.25 14.15c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.84-.2-.48-.41-.42-.56-.43-.14-.01-.31-.01-.48-.01-.17 0-.44.06-.67.31-.23.25-.86.85-.86 2.06 0 1.22.89 2.39 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z"/>
+            </svg>
+          </div>
+          <span class="text-xl font-bold bg-gradient-to-r from-whatsapp-light to-emerald-400 bg-clip-text text-transparent">
+            BotEco
+          </span>
+        </a>
+        <p class="text-gray-400 text-sm text-center md:text-left max-w-xs">
+          Transforme suas mensagens do WhatsApp em performances de voz épicas com IA.
+        </p>
+      </div>
+
+      <!-- Links -->
+      <div class="flex flex-wrap justify-center gap-6 text-sm">
+        <a href="/termos" class="text-gray-400 hover:text-white transition-colors">
+          Termos de Uso
+        </a>
+        <a href="/privacidade" class="text-gray-400 hover:text-white transition-colors">
+          Privacidade
+        </a>
+        <a href="mailto:contato@boteco.app" class="text-gray-400 hover:text-white transition-colors">
+          Contato
+        </a>
+      </div>
+
+      <!-- Powered by -->
+      <div class="flex flex-col items-center md:items-end gap-2">
+        <p class="text-gray-500 text-xs">Powered by</p>
+        <div class="flex items-center gap-3">
+          <span class="text-gray-400 text-sm font-medium">ElevenLabs</span>
+          <span class="text-gray-600">|</span>
+          <span class="text-gray-400 text-sm font-medium">OpenAI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-8 pt-8 border-t border-gray-800 text-center">
+      <p class="text-gray-500 text-sm">
+        &copy; {currentYear} BotEco. Todos os direitos reservados.
+      </p>
+    </div>
+  </div>
+</footer>

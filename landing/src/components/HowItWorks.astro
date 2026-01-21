@@ -1,0 +1,102 @@
+---
+const steps = [
+  {
+    number: '1',
+    title: 'Responda qualquer mensagem',
+    description: 'No WhatsApp, responda uma mensagem de texto do seu amigo ou em um grupo.',
+    icon: '💬',
+    example: null,
+  },
+  {
+    number: '2',
+    title: 'Digite o estilo',
+    description: 'Escreva como você quer que a mensagem seja falada usando linguagem natural.',
+    icon: '🎭',
+    example: '"fala como vilão"',
+  },
+  {
+    number: '3',
+    title: 'Receba o áudio',
+    description: 'Em segundos, você recebe o áudio estilizado pronto para surpreender todos.',
+    icon: '🔊',
+    example: null,
+  },
+];
+---
+
+<section class="relative py-24 overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0 bg-gray-950"></div>
+  <div class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.02)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <span class="inline-block bg-whatsapp-dark/20 border border-whatsapp-light/30 rounded-full px-4 py-1.5 text-whatsapp-light text-sm font-medium mb-4">
+        Como Funciona
+      </span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+        Simples como <span class="bg-gradient-to-r from-whatsapp-light to-emerald-400 bg-clip-text text-transparent">mandar uma mensagem</span>
+      </h2>
+      <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+        Três passos. Zero complicação. Nenhum aplicativo para baixar.
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+      {steps.map((step, index) => (
+        <div class="relative">
+          {/* Connector Line */}
+          {index < steps.length - 1 && (
+            <div class="hidden md:block absolute top-12 left-1/2 w-full h-0.5 bg-gradient-to-r from-whatsapp-light/50 to-whatsapp-light/0"></div>
+          )}
+
+          <div class="relative bg-gray-900/50 backdrop-blur border border-gray-800 rounded-2xl p-8 text-center hover:border-whatsapp-light/30 transition-all duration-300 group">
+            {/* Step Number */}
+            <div class="absolute -top-5 left-1/2 -translate-x-1/2 w-10 h-10 bg-gradient-to-br from-whatsapp-light to-whatsapp-dark rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-whatsapp-light/30">
+              {step.number}
+            </div>
+
+            {/* Icon */}
+            <div class="text-5xl mb-6 mt-4 group-hover:scale-110 transition-transform duration-300">
+              {step.icon}
+            </div>
+
+            {/* Content */}
+            <h3 class="text-xl font-bold text-white mb-3">{step.title}</h3>
+            <p class="text-gray-400 mb-4">{step.description}</p>
+
+            {/* Example */}
+            {step.example && (
+              <div class="inline-block bg-gray-800 border border-gray-700 rounded-lg px-4 py-2">
+                <code class="text-whatsapp-light text-sm">{step.example}</code>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Commands Preview -->
+    <div class="mt-16 bg-gray-900/50 backdrop-blur border border-gray-800 rounded-2xl p-8 max-w-3xl mx-auto">
+      <h3 class="text-lg font-semibold text-white mb-4 text-center">Exemplos de comandos que você pode usar:</h3>
+      <div class="flex flex-wrap justify-center gap-3">
+        {[
+          'fala como vilão',
+          'narra estilo trailer',
+          'voz de robô',
+          'fala sussurrando',
+          'estilo narrador esportivo',
+          'voz de pirata',
+          'tom sarcástico',
+          'fala animado',
+        ].map((command) => (
+          <span class="bg-gray-800 border border-gray-700 rounded-full px-4 py-2 text-sm text-gray-300 hover:border-whatsapp-light/50 hover:text-whatsapp-light transition-colors cursor-default">
+            "{command}"
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

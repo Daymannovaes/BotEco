@@ -57,11 +57,11 @@ export async function handleMultiTenantMessage(
     // Check rate limit
     const user = await findUserById(userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Usuário não encontrado');
     }
 
     if (user.is_disabled) {
-      throw new Error('Account is disabled');
+      throw new Error('Conta desativada');
     }
 
     // Check if user has enough character allowance
@@ -73,7 +73,7 @@ export async function handleMultiTenantMessage(
       await sendTextMessageMulti(
         sock,
         chatId,
-        `Daily character limit reached. Remaining: ${usageResult.remaining} characters. Resets tomorrow.`,
+        `Limite diário de caracteres atingido. Restante: ${usageResult.remaining} caracteres. Reseta amanhã.`,
         message
       );
       return;
@@ -96,8 +96,8 @@ export async function handleMultiTenantMessage(
     console.error(`[User:${userId}] Error:`, error);
     await sendReactionMulti(sock, chatId, message.key, '❌');
 
-    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-    await sendTextMessageMulti(sock, chatId, `Error: ${errorMsg}`, message);
+    const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido';
+    await sendTextMessageMulti(sock, chatId, `Erro: ${errorMsg}`, message);
   }
 }
 
@@ -225,10 +225,10 @@ export async function handleMessage(
     await sendReaction(chatId, message.key, '❌');
 
     // Send error message
-    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+    const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido';
     await sendTextMessage(
       chatId,
-      `Sorry, I couldn't generate that voice. Error: ${errorMsg}`,
+      `Não foi possível gerar a voz. Erro: ${errorMsg}`,
       message
     );
   }

@@ -1,0 +1,141 @@
+---
+const plans = [
+  {
+    name: 'Grátis',
+    price: 'R$0',
+    period: '/mês',
+    messages: '~20 mensagens',
+    description: 'Perfeito para testar',
+    features: [
+      'Todos os 15 estilos de voz',
+      'Entrega instantânea',
+      'Funciona em grupos',
+    ],
+    cta: 'Começar Grátis',
+    highlighted: false,
+  },
+  {
+    name: 'Starter',
+    price: 'R$29',
+    period: '/mês',
+    messages: '~200 mensagens',
+    description: 'Para uso regular',
+    features: [
+      'Tudo do plano Grátis',
+      'Suporte por email',
+      'Prioridade na fila',
+    ],
+    cta: 'Assinar Starter',
+    highlighted: false,
+  },
+  {
+    name: 'Pro',
+    price: 'R$79',
+    period: '/mês',
+    messages: '~1.000 mensagens',
+    description: 'Mais popular',
+    features: [
+      'Tudo do plano Starter',
+      'Suporte prioritário',
+      'Novos estilos primeiro',
+    ],
+    cta: 'Assinar Pro',
+    highlighted: true,
+  },
+  {
+    name: 'Business',
+    price: 'R$249',
+    period: '/mês',
+    messages: '~4.000 mensagens',
+    description: 'Para empresas',
+    features: [
+      'Tudo do plano Pro',
+      'Vozes customizadas',
+      'Suporte dedicado',
+    ],
+    cta: 'Falar com Vendas',
+    highlighted: false,
+  },
+];
+---
+
+<section id="precos" class="relative py-24 overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0 bg-gray-950"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-whatsapp-dark/10 via-transparent to-transparent"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <span class="inline-block bg-whatsapp-dark/20 border border-whatsapp-light/30 rounded-full px-4 py-1.5 text-whatsapp-light text-sm font-medium mb-4">
+        Preços
+      </span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+        Planos que <span class="bg-gradient-to-r from-whatsapp-light to-emerald-400 bg-clip-text text-transparent">cabem no seu bolso</span>
+      </h2>
+      <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+        Comece grátis. Escale quando precisar.
+      </p>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {plans.map((plan) => (
+        <div
+          class={`relative rounded-2xl p-6 transition-all duration-300 ${
+            plan.highlighted
+              ? 'bg-gradient-to-b from-whatsapp-dark/30 to-gray-900 border-2 border-whatsapp-light shadow-xl shadow-whatsapp-light/20 scale-105'
+              : 'bg-gray-900/50 backdrop-blur border border-gray-800 hover:border-gray-700'
+          }`}
+        >
+          {/* Popular Badge */}
+          {plan.highlighted && (
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-whatsapp-light to-whatsapp-dark text-white text-sm font-bold px-4 py-1 rounded-full">
+              Mais Popular
+            </div>
+          )}
+
+          {/* Plan Info */}
+          <div class="text-center mb-6">
+            <h3 class="text-xl font-bold text-white mb-1">{plan.name}</h3>
+            <p class="text-gray-500 text-sm mb-4">{plan.description}</p>
+            <div class="flex items-end justify-center gap-1">
+              <span class="text-4xl font-bold text-white">{plan.price}</span>
+              <span class="text-gray-500 mb-1">{plan.period}</span>
+            </div>
+            <p class="text-whatsapp-light text-sm mt-2">{plan.messages}</p>
+          </div>
+
+          {/* Features */}
+          <ul class="space-y-3 mb-6">
+            {plan.features.map((feature) => (
+              <li class="flex items-start gap-2 text-gray-300 text-sm">
+                <svg class="w-5 h-5 text-whatsapp-light flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          {/* CTA */}
+          <a
+            href="/conectar"
+            class={`block w-full text-center font-semibold py-3 rounded-full transition-all duration-300 ${
+              plan.highlighted
+                ? 'bg-gradient-to-r from-whatsapp-light to-whatsapp-dark hover:from-whatsapp-dark hover:to-whatsapp-light text-white shadow-lg shadow-whatsapp-light/25 hover:shadow-whatsapp-light/40'
+                : 'bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hover:border-gray-600'
+            }`}
+          >
+            {plan.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- Note -->
+    <p class="text-center text-gray-500 text-sm mt-8">
+      Todos os planos incluem acesso a todos os estilos de voz. Cancele quando quiser.
+    </p>
+  </div>
+</section>
