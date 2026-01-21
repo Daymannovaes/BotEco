@@ -26,10 +26,13 @@ export function useAuth() {
       return;
     }
 
-    const { data, error } = await api.auth.me();
+    const { data, error: authError } = await api.auth.me();
     if (data?.user) {
       setUser(data.user);
     } else {
+      if (authError) {
+        setError(authError);
+      }
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
     }
