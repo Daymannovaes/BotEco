@@ -3,8 +3,15 @@ kind: Ingress
 metadata:
   name: wpp-bot-ingress
   namespace: wpp-bot
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - api.boteco.subadenivel.com
+        - dashboard.boteco.subadenivel.com
+      secretName: wpp-bot-tls
   rules:
     - host: api.boteco.subadenivel.com
       http:

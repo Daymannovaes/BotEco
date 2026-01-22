@@ -131,6 +131,35 @@ kubectl get svc -n traefik traefik
 - Built-in dashboard for traffic visibility
 - Cloud-native with automatic service discovery
 
+### Step 3.5: Install cert-manager (TLS Certificates)
+
+cert-manager automates TLS certificate management using Let's Encrypt.
+
+Install cert-manager:
+```bash
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml
+```
+
+Wait for it to be ready:
+```bash
+kubectl get pods -n cert-manager -w
+```
+
+Once all pods are `Running`, apply the cluster issuers:
+```bash
+kubectl apply -f k8s/cert-manager/issuer.yaml
+```
+
+Verify the issuers are ready:
+```bash
+kubectl get clusterissuer
+```
+
+**How it works:**
+- The Ingress has annotation `cert-manager.io/cluster-issuer: letsencrypt-prod`
+- cert-manager sees this and requests a certificate from Let's Encrypt
+- The certificate is stored in a Secret and auto-renewed before expiry
+
 ### Understanding Contexts
 
 A **context** bundles three things into a named shortcut:
@@ -378,18 +407,39 @@ This is why K8s works across AWS, GCP, Linode, bare metal - same API, different 
 |  |   |   |                    INGRESS                           |    |   |
 |  |   |   |  api.yourdomain.com -> wpp-bot                       |    |   |
 |  |   |   |  dashboard.yourdomain.com -> dashboard               |    |   |
+|  |   |   |  (annotated: cert-manager.io/cluster-issuer)         |    |   |
 |  |   |   +------------------------+-----------------------------+    |   |
 |  |   |   |              INGRESS CONTROLLER                      |    |   |
 |  |   |   |   (traefik - routes external traffic)                |    |   |
+|  |   |   |   (reads TLS secrets for HTTPS)                      |    |   |
 |  |   |   +------------------------+-----------------------------+    |   |
 |  |   +----------------------------|----------------------------------+   |
+|  |                                |                                      |
+|  |   TLS CERTIFICATE MANAGEMENT                                          |
+|  |   +---------------------------------------------------------------+   |
+|  |   |                                                               |   |
+|  |   |   +------------------+    +------------------+                |   |
+|  |   |   |   CERT-MANAGER   |    |   TLS SECRETS    |                |   |
+|  |   |   |  • Watches       |    |   (wpp-bot-tls)  |                |   |
+|  |   |   |    Ingress       |--->|  • Certificate   |                |   |
+|  |   |   |  • Requests      |    |  • Private key   |                |   |
+|  |   |   |    certs         |    |  • Auto-renewed  |                |   |
+|  |   |   |  • Auto-renews   |    +------------------+                |   |
+|  |   |   +--------+---------+            ^                           |   |
+|  |   |            |                      | Traefik reads             |   |
+|  |   |            | ACME protocol        +---------------------------+   |
+|  |   |            v                                                  |   |
+|  |   +---------------------------------------------------------------+   |
 |  +--------------------------------|--------------------------------------+
 +-----------------------------------|------------------------------------------+
                                     |
-                               +----v----+
-                               | INTERNET |
-                               |  (you)   |
-                               +----------+
+                      +-------------+-------------+
+                      |                           |
+                 +----v----+               +------v------+
+                 | INTERNET |               | LET'S       |
+                 |  (you)   |               | ENCRYPT     |
+                 +----------+               | (ACME CA)   |
+                                            +-------------+
 ```
 
 ---
@@ -411,7 +461,7 @@ kubectl describe pod <pod-name> -n wpp-bot
 ### Logs & Debugging
 ```bash
 # See logs from your app
-kubectl logs -f deployment/wpp-bot -n wpp-bot
+kubectl logs -n wpp-bot -f -l app=wpp-bot
 
 # Get a shell inside your running container
 kubectl exec -it deployment/wpp-bot -n wpp-bot -- /bin/sh
@@ -584,6 +634,7 @@ terraform apply -var="linode_token=your-token-here"
 | **Context** | Named shortcut bundling cluster + user + namespace |
 | **Control Plane** | K8s brain - API server, scheduler, etcd (managed by Linode) |
 | **Worker Node** | VM that runs your pods (what you see with `kubectl get nodes`) |
+| **cert-manager** | Automates TLS certificate management (Let's Encrypt integration) |
 | **CI/CD** | Continuous Integration/Deployment - automated build & deploy pipeline |
 | **ghcr.io** | GitHub Container Registry - stores Docker images |
 | **Container** | Running instance of a Docker image (lives inside a pod) |
