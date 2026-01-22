@@ -45,6 +45,8 @@ jobs:
         with:
           context: ./dashboard
           push: true
+          build-args: |
+            VITE_API_URL=https://api.yourdomain.com
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_DASHBOARD }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_DASHBOARD }}:${{ github.sha }}

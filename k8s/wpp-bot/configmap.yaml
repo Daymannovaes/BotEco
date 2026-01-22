@@ -7,7 +7,7 @@ data:
   NODE_ENV: production
   LOG_LEVEL: info
   API_PORT: "3000"
-  CORS_ORIGINS: "https://dashboard.yourdomain.com"
+  CORS_ORIGINS: "https://dashboard.yourdomain.com,http://localhost:5173"
   DB_HOST: postgres
   DB_PORT: "5432"
   DB_USER: wppbot
