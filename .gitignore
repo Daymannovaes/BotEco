@@ -40,3 +40,6 @@ terraform/terraform.tfvars
 # Dashboard
 dashboard/node_modules/
 dashboard/dist/
+
+# Kubernetes secrets
+k8s/**/secret.yaml

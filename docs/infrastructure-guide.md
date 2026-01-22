@@ -389,6 +389,74 @@ When Linode asks for a token to view the dashboard, you need to:
 
 ---
 
+## Connecting to PostgreSQL
+
+The PostgreSQL database runs inside the cluster. Here's how to connect depending on your use case.
+
+### Understanding Service Types
+
+By default, PostgreSQL uses a **ClusterIP** service - it's only accessible inside the cluster via `postgres:5432`. Apps like wpp-bot connect using the service name as the hostname.
+
+### Port Forward (Individual Developer Access)
+
+**Best for:** Development, debugging, ad-hoc queries
+
+Port forwarding creates a client-side tunnel - no cluster changes needed. It's secure (requires kubectl auth) and temporary.
+
+```bash
+# Forward local port 5432 to the postgres service
+kubectl port-forward -n wpp-bot svc/postgres 5432:5432
+
+# In another terminal, connect with psql
+psql -h localhost -U wppbot -d wppbot
+```
+
+This works with GUI clients too (DBeaver, TablePlus, pgAdmin) - just connect to `localhost:5432`.
+
+### LoadBalancer (Team Access)
+
+**Best for:** Shared access across a team (similar to RDS)
+
+Modify the postgres service to expose it externally:
+
+```yaml
+# k8s/postgres/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: wpp-bot
+spec:
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+    - 203.0.113.0/24  # Whitelist your team's IPs
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres
+```
+
+After applying, get the external IP:
+```bash
+kubectl get svc postgres -n wpp-bot
+# Share connection string: postgres://wppbot:password@<EXTERNAL-IP>:5432/wppbot
+```
+
+> **Security note:** Always use `loadBalancerSourceRanges` to restrict access to known IPs.
+
+### Direct Pod Access (Quick Queries)
+
+**Best for:** One-off queries, quick checks
+
+```bash
+kubectl exec -it deploy/postgres -n wpp-bot -- psql -U wppbot -d wppbot
+```
+
+This drops you directly into a psql shell inside the running container.
+
+---
+
 ## Providing the Linode API Token
 
 You have 3 options:
