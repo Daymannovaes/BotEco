@@ -5,13 +5,13 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: YOUR_EMAIL@example.com
+    email: daymannovaes@gmail.com
     privateKeySecretRef:
       name: letsencrypt-prod-key
     solvers:
       - http01:
           ingress:
-            class: nginx
+            class: traefik
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -20,10 +20,10 @@ metadata:
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: YOUR_EMAIL@example.com
+    email: daymannovaes@gmail.com
     privateKeySecretRef:
       name: letsencrypt-staging-key
     solvers:
       - http01:
           ingress:
-            class: nginx
+            class: traefik

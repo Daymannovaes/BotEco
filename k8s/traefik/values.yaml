@@ -1,0 +1,7 @@
+# Traefik Helm chart values
+# https://github.com/traefik/traefik-helm-chart
+
+ports:
+  web:
+    # Disable automatic HTTP -> HTTPS redirect
+    redirectTo: null

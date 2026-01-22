@@ -105,7 +105,15 @@ Install Traefik:
 ```bash
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
-helm install traefik traefik/traefik --namespace traefik --create-namespace
+helm install traefik traefik/traefik \
+  --namespace traefik \
+  --create-namespace \
+  -f k8s/traefik/values.yaml
+```
+
+To update Traefik configuration after changing `k8s/traefik/values.yaml`:
+```bash
+helm upgrade traefik traefik/traefik --namespace traefik -f k8s/traefik/values.yaml
 ```
 
 Check status:
@@ -367,12 +375,12 @@ This is why K8s works across AWS, GCP, Linode, bare metal - same API, different 
 |  |   |   +----+-----+    +------------+                              |   |
 |  |   |        |                                                      |   |
 |  |   |   +----v-------------------------------------------------+    |   |
-|  |   |   |              INGRESS CONTROLLER                      |    |   |
-|  |   |   |   (traefik - routes external traffic)                |    |   |
-|  |   |   +------------------------+-----------------------------+    |   |
 |  |   |   |                    INGRESS                           |    |   |
 |  |   |   |  api.yourdomain.com -> wpp-bot                       |    |   |
 |  |   |   |  dashboard.yourdomain.com -> dashboard               |    |   |
+|  |   |   +------------------------+-----------------------------+    |   |
+|  |   |   |              INGRESS CONTROLLER                      |    |   |
+|  |   |   |   (traefik - routes external traffic)                |    |   |
 |  |   |   +------------------------+-----------------------------+    |   |
 |  |   +----------------------------|----------------------------------+   |
 |  +--------------------------------|--------------------------------------+
