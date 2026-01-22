@@ -93,6 +93,36 @@ export KUBECONFIG=./terraform/kubeconfig.yaml
 kubectl get nodes
 ```
 
+### Step 3: Install Ingress Controller
+
+The `k8s/ingress.yaml` defines routing rules, but needs an **Ingress Controller** to work:
+- **Ingress resource** = Instructions (your YAML file)
+- **Ingress controller** = The software that reads and executes those instructions
+
+> **Note:** The community `kubernetes/ingress-nginx` project retires March 2026. We use **Traefik** instead.
+
+Install Traefik:
+```bash
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+helm install traefik traefik/traefik --namespace traefik --create-namespace
+```
+
+Check status:
+```bash
+# See all Traefik resources
+kubectl get all -n traefik
+
+# Get the external IP (for DNS configuration)
+kubectl get svc -n traefik traefik
+```
+
+**Why Traefik?**
+- Automatic Let's Encrypt certificates
+- Supports both Kubernetes Ingress and Gateway API (future-proof)
+- Built-in dashboard for traffic visibility
+- Cloud-native with automatic service discovery
+
 ### Understanding Contexts
 
 A **context** bundles three things into a named shortcut:
@@ -119,7 +149,7 @@ KUBECONFIG=~/.kube/config:./terraform/kubeconfig.yaml \
   kubectl config view --flatten > ~/.kube/config
 ```
 
-### Step 3: Deploy to Kubernetes
+### Step 4: Deploy to Kubernetes
 ```bash
 # Create the namespace first
 kubectl apply -f k8s/namespace.yaml
@@ -232,6 +262,50 @@ Kubernetes orchestrates **pods**, not nodes:
 
 The cluster autoscaler (configured in Terraform) adds nodes when pods don't fit, but that's Linode logic, not core K8s.
 
+### How Kubernetes Works with Cloud Providers
+
+Kubernetes defines abstract concepts (like "LoadBalancer Service" or "PersistentVolume"), but doesn't know how to provision actual cloud resources. Cloud providers implement these abstractions through pluggable components:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  KUBERNETES (Pure Logic)                                    │
+│  Pods, Deployments, ConfigMaps, Secrets, Namespaces...      │
+│  → K8s handles these entirely on its own                    │
+└──────────────────────────┬──────────────────────────────────┘
+                           │ delegates infrastructure
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│  CLOUD PROVIDER INTERFACES                                  │
+│  ┌───────────────────────┐    ┌───────────────────────┐     │
+│  │ Cloud Controller      │    │ CSI Driver            │     │
+│  │ Manager (CCM)         │    │ (Storage Interface)   │     │
+│  │ • LoadBalancer Svc    │    │ • PersistentVolumes   │     │
+│  │ • Node lifecycle      │    │ • StorageClasses      │     │
+│  └───────────────────────┘    └───────────────────────┘     │
+└──────────────────────────┬──────────────────────────────────┘
+                           │ calls cloud API
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│  LINODE API                                                 │
+│  • Provisions NodeBalancers (for LoadBalancer Services)     │
+│  • Provisions Block Storage (for PersistentVolumes)         │
+│  • Manages VMs (nodes)                                      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**What needs cloud implementation vs what doesn't:**
+
+| K8s Concept | Needs Cloud? | Why |
+|-------------|--------------|-----|
+| Pod, Deployment | No | Just processes/logic on existing nodes |
+| ConfigMap, Secret | No | Stored in etcd (control plane) |
+| ClusterIP Service | No | Internal networking only |
+| **LoadBalancer Service** | **Yes** | Needs external IP + cloud load balancer |
+| **PersistentVolume** | **Yes** | Needs actual disk provisioned |
+| **Node** | **Yes** | Needs actual VM |
+
+This is why K8s works across AWS, GCP, Linode, bare metal - same API, different backend implementations.
+
 ---
 
 ## Architecture Diagram
@@ -293,6 +367,9 @@ The cluster autoscaler (configured in Terraform) adds nodes when pods don't fit,
 |  |   |   +----+-----+    +------------+                              |   |
 |  |   |        |                                                      |   |
 |  |   |   +----v-------------------------------------------------+    |   |
+|  |   |   |              INGRESS CONTROLLER                      |    |   |
+|  |   |   |   (traefik - routes external traffic)                |    |   |
+|  |   |   +------------------------+-----------------------------+    |   |
 |  |   |   |                    INGRESS                           |    |   |
 |  |   |   |  api.yourdomain.com -> wpp-bot                       |    |   |
 |  |   |   |  dashboard.yourdomain.com -> dashboard               |    |   |
