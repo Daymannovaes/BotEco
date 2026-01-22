@@ -9,11 +9,22 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - api.boteco.subadenivel.com
-        - dashboard.boteco.subadenivel.com
+        - boteco.solvelabs.dev
+        - api.boteco.solvelabs.dev
+        - dashboard.boteco.solvelabs.dev
       secretName: wpp-bot-tls
   rules:
-    - host: api.boteco.subadenivel.com
+    - host: boteco.solvelabs.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wpp-landing
+                port:
+                  number: 80
+    - host: api.boteco.solvelabs.dev
       http:
         paths:
           - path: /
@@ -23,7 +34,7 @@ spec:
                 name: wpp-bot
                 port:
                   number: 3000
-    - host: dashboard.boteco.subadenivel.com
+    - host: dashboard.boteco.solvelabs.dev
       http:
         paths:
           - path: /

@@ -23,6 +23,7 @@ jobs:
         run: |
           echo "IMAGE_BOT=$(echo ${{ github.repository_owner }}/wpp-bot | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
           echo "IMAGE_DASHBOARD=$(echo ${{ github.repository_owner }}/wpp-dashboard | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "IMAGE_LANDING=$(echo ${{ github.repository_owner }}/wpp-landing | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Log in to Container Registry
         uses: docker/login-action@v3
@@ -46,10 +47,19 @@ jobs:
           context: ./dashboard
           push: true
           build-args: |
-            VITE_API_URL=https://api.boteco.subadenivel.com
+            VITE_API_URL=https://api.boteco.solvelabs.dev
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_DASHBOARD }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_DASHBOARD }}:${{ github.sha }}
+
+      - name: Build and push wpp-landing
+        uses: docker/build-push-action@v5
+        with:
+          context: ./landing
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_LANDING }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_LANDING }}:${{ github.sha }}
 
   deploy:
     needs: build-and-push
@@ -61,4 +71,4 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: rollout restart deployment/wpp-bot deployment/wpp-dashboard -n wpp-bot
+          args: rollout restart deployment/wpp-bot deployment/wpp-dashboard deployment/wpp-landing -n wpp-bot
