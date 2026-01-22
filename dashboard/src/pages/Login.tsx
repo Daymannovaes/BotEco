@@ -19,7 +19,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-900 px-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white">VoiceReply</h1>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">BotEco</h1>
           <p className="mt-2 text-gray-400">Entre na sua conta</p>
         </div>
 

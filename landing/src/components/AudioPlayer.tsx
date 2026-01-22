@@ -11,6 +11,7 @@ export default function AudioPlayer({ src, name, color }: AudioPlayerProps) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [hasError, setHasError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -18,6 +19,11 @@ export default function AudioPlayer({ src, name, color }: AudioPlayerProps) {
     if (!audio) return;
 
     const handleLoadedMetadata = () => {
+      // Check if audio has valid duration (empty files have 0 or NaN duration)
+      if (!audio.duration || audio.duration === 0 || isNaN(audio.duration)) {
+        setHasError(true);
+        return;
+      }
       setDuration(audio.duration);
     };
 
@@ -32,14 +38,20 @@ export default function AudioPlayer({ src, name, color }: AudioPlayerProps) {
       setCurrentTime(0);
     };
 
+    const handleError = () => {
+      setHasError(true);
+    };
+
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
 
     return () => {
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
     };
   }, []);
 
@@ -81,6 +93,26 @@ export default function AudioPlayer({ src, name, color }: AudioPlayerProps) {
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
+
+  if (hasError) {
+    return (
+      <div className="w-full">
+        <div className="flex items-center gap-3">
+          <div
+            className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 opacity-50 bg-gradient-to-br ${color}`}
+          >
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm text-gray-400">Em breve</p>
+            <p className="text-xs text-gray-500">Estamos preparando este estilo</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

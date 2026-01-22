@@ -55,7 +55,7 @@ export default function Connect() {
       {/* Header */}
       <header className="bg-gray-800 border-b border-gray-700">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">VoiceReply</h1>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">BotEco</h1>
           <Link
             to="/dashboard"
             className="text-gray-400 hover:text-white transition-colors"
