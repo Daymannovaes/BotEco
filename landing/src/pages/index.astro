@@ -27,7 +27,7 @@ import Footer from '../components/Footer.astro';
   <!-- Sticky Mobile CTA -->
   <div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-gray-950 via-gray-950/95 to-transparent md:hidden z-40">
     <a
-      href="/conectar"
+      href={import.meta.env.PUBLIC_DASHBOARD_URL}
       class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-whatsapp-light to-whatsapp-dark text-white font-bold py-4 rounded-full text-lg shadow-xl shadow-whatsapp-light/30"
     >
       <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">

@@ -1,6 +1,9 @@
 # Build stage
 FROM node:20-alpine AS build
 
+ARG PUBLIC_DASHBOARD_URL
+ENV PUBLIC_DASHBOARD_URL=$PUBLIC_DASHBOARD_URL
+
 WORKDIR /app
 
 COPY package*.json ./

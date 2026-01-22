@@ -57,6 +57,8 @@ jobs:
         with:
           context: ./landing
           push: true
+          build-args: |
+            PUBLIC_DASHBOARD_URL=https://dashboard.boteco.solvelabs.dev
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_LANDING }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_LANDING }}:${{ github.sha }}

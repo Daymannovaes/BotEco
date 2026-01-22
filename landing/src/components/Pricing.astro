@@ -120,7 +120,7 @@ const plans = [
 
           {/* CTA */}
           <a
-            href="/conectar"
+            href={import.meta.env.PUBLIC_DASHBOARD_URL}
             class={`block w-full text-center font-semibold py-3 rounded-full transition-all duration-300 ${
               plan.highlighted
                 ? 'bg-gradient-to-r from-whatsapp-light to-whatsapp-dark hover:from-whatsapp-dark hover:to-whatsapp-light text-white shadow-lg shadow-whatsapp-light/25 hover:shadow-whatsapp-light/40'
