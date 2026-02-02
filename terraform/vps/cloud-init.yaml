@@ -55,7 +55,7 @@ runcmd:
   - systemctl start fail2ban
 
   # Clone application repository and create data directories
-  - git clone https://github.com/daymannovaes/wpp-bot.git /opt/wpp-bot
+  - git clone https://github.com/Daymannovaes/BotEco.git /opt/wpp-bot
   - mkdir -p /opt/wpp-bot/data/auth_info
   - mkdir -p /opt/wpp-bot/data/cache
   - chown -R deploy:deploy /opt/wpp-bot
