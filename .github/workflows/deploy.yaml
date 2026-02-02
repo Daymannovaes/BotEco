@@ -68,9 +68,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to Kubernetes
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-        with:
-          args: rollout restart deployment/wpp-bot deployment/wpp-dashboard deployment/wpp-landing -n wpp-bot
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+            cd /opt/wpp-bot
+            git pull origin main
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d
+            docker image prune -f
+          ENDSSH
+
+      - name: Verify deployment
+        run: |
+          sleep 10
+          curl -f https://api.boteco.solvelabs.dev/health || echo "Health check pending..."

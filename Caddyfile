@@ -1,0 +1,17 @@
+# WPP-Bot Caddyfile
+# Automatic HTTPS with Let's Encrypt
+
+# Landing page
+boteco.solvelabs.dev {
+    reverse_proxy wpp-landing:80
+}
+
+# API
+api.boteco.solvelabs.dev {
+    reverse_proxy wpp-bot:3000
+}
+
+# Dashboard
+dashboard.boteco.solvelabs.dev {
+    reverse_proxy wpp-dashboard:80
+}
